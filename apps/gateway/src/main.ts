@@ -1,7 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { GatewayModule } from "./gateway.module";
 import { Transport } from "@nestjs/microservices";
-import compression from "compression";
+import * as compression from "compression";
 
 async function bootstrap() {
     const app = await NestFactory.create(GatewayModule);

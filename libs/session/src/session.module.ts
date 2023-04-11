@@ -11,7 +11,7 @@ import {
     VerifySessionHandler
 } from "./commands";
 import { JwtAuthGuard } from "./guards";
-import { ValidateCredentialsHandler, queryHandlers } from "./queries";
+import { ValidateCredentialsHandler } from "./queries";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { LocalStrategy } from "./strategies/local.strategy";
 @Module({

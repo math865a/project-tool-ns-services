@@ -6,7 +6,7 @@ import { ValidateCredentialsQuery } from './validate-credentials.query';
 
 @QueryHandler(ValidateCredentialsQuery)
 export class ValidateCredentialsHandler
-    implements IQueryHandler<ValidateCredentialsQuery, {uid: string} | null>
+    implements IQueryHandler<ValidateCredentialsQuery, {uid: string | null} >
 {
     constructor(private readonly client: Neo4jClient, private publisher: DomainEvents) {}
 
@@ -30,7 +30,7 @@ export class ValidateCredentialsHandler
 
     query = `
         MATCH (a:Credentials)--(u:User)
-            WHERE a.password = $password AND u.username = $email
+            WHERE a.password = $password AND a.username = $email
         RETURN u.uid as uid
     `;
 }
