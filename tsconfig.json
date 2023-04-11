@@ -1,0 +1,113 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@ns/neo4j": [
+        "libs/neo4j/src"
+      ],
+      "@ns/neo4j/*": [
+        "libs/neo4j/src/*"
+      ],
+      "@ns/cqrs": [
+        "libs/cqrs/src"
+      ],
+      "@ns/cqrs/*": [
+        "libs/cqrs/src/*"
+      ],
+      "@ns/middleware": [
+        "libs/middleware/src"
+      ],
+      "@ns/middleware/*": [
+        "libs/middleware/src/*"
+      ],
+      "@ns/redis": [
+        "libs/redis/src"
+      ],
+      "@ns/redis/*": [
+        "libs/redis/src/*"
+      ],
+      "@ns/util": [
+        "libs/util/src"
+      ],
+      "@ns/util/*": [
+        "libs/util/src/*"
+      ],
+      "@ns/nats": [
+        "libs/nats/src"
+      ],
+      "@ns/nats/*": [
+        "libs/nats/src/*"
+      ],
+      "@ns/endpoints": [
+        "libs/endpoints/src"
+      ],
+      "@ns/endpoints/*": [
+        "libs/endpoints/src/*"
+      ],
+      "@ns/decorators": [
+        "libs/decorators/src"
+      ],
+      "@ns/decorators/*": [
+        "libs/decorators/src/*"
+      ],
+      "@ns/guards": [
+        "libs/guards/src"
+      ],
+      "@ns/guards/*": [
+        "libs/guards/src/*"
+      ],
+      "@ns/session": [
+        "libs/session/src"
+      ],
+      "@ns/session/*": [
+        "libs/session/src/*"
+      ],
+      "@ns/events": [
+        "libs/events/src"
+      ],
+      "@ns/events/*": [
+        "libs/events/src/*"
+      ],
+      "@ns/dto": [
+        "libs/dto/src"
+      ],
+      "@ns/dto/*": [
+        "libs/dto/src/*"
+      ],
+      "@ns/definitions": [
+        "libs/definitions/src"
+      ],
+      "@ns/definitions/*": [
+        "libs/definitions/src/*"
+      ],
+      "@ns/mongodb": [
+        "libs/mongodb/src"
+      ],
+      "@ns/mongodb/*": [
+        "libs/mongodb/src/*"
+      ],
+      "@ns/service-deps": [
+        "libs/service-deps/src"
+      ],
+      "@ns/service-deps/*": [
+        "libs/service-deps/src/*"
+      ]
+    }
+  }
+}

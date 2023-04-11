@@ -1,0 +1,239 @@
+{
+    "$schema": "https://json.schemastore.org/nest-cli",
+    "collection": "@nestjs/schematics",
+    "sourceRoot": "apps/_gateway/src",
+    "projects": {
+        "neo4j": {
+            "type": "library",
+            "root": "libs/neo4j",
+            "entryFile": "index",
+            "sourceRoot": "libs/neo4j/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/neo4j/tsconfig.lib.json"
+            }
+        },
+        "cqrs": {
+            "type": "library",
+            "root": "libs/cqrs",
+            "entryFile": "index",
+            "sourceRoot": "libs/cqrs/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/cqrs/tsconfig.lib.json"
+            }
+        },
+        "middleware": {
+            "type": "library",
+            "root": "libs/middleware",
+            "entryFile": "index",
+            "sourceRoot": "libs/middleware/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/middleware/tsconfig.lib.json"
+            }
+        },
+        "redis": {
+            "type": "library",
+            "root": "libs/redis",
+            "entryFile": "index",
+            "sourceRoot": "libs/redis/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/redis/tsconfig.lib.json"
+            }
+        },
+        "util": {
+            "type": "library",
+            "root": "libs/util",
+            "entryFile": "index",
+            "sourceRoot": "libs/util/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/util/tsconfig.lib.json"
+            }
+        },
+        "nats": {
+            "type": "library",
+            "root": "libs/nats",
+            "entryFile": "index",
+            "sourceRoot": "libs/nats/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/nats/tsconfig.lib.json"
+            }
+        },
+        "endpoints": {
+            "type": "library",
+            "root": "libs/endpoints",
+            "entryFile": "index",
+            "sourceRoot": "libs/endpoints/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/endpoints/tsconfig.lib.json"
+            }
+        },
+        "decorators": {
+            "type": "library",
+            "root": "libs/decorators",
+            "entryFile": "index",
+            "sourceRoot": "libs/decorators/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/decorators/tsconfig.lib.json"
+            }
+        },
+        "guards": {
+            "type": "library",
+            "root": "libs/guards",
+            "entryFile": "index",
+            "sourceRoot": "libs/guards/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/guards/tsconfig.lib.json"
+            }
+        },
+        "session": {
+            "type": "library",
+            "root": "libs/session",
+            "entryFile": "index",
+            "sourceRoot": "libs/session/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/session/tsconfig.lib.json"
+            }
+        },
+
+        "events": {
+            "type": "library",
+            "root": "libs/events",
+            "entryFile": "index",
+            "sourceRoot": "libs/events/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/events/tsconfig.lib.json"
+            }
+        },
+        "dto": {
+            "type": "library",
+            "root": "libs/dto",
+            "entryFile": "index",
+            "sourceRoot": "libs/dto/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/dto/tsconfig.lib.json"
+            }
+        },
+        "definitions": {
+            "type": "library",
+            "root": "libs/definitions",
+            "entryFile": "index",
+            "sourceRoot": "libs/definitions/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/definitions/tsconfig.lib.json"
+            }
+        },
+        "mongodb": {
+            "type": "library",
+            "root": "libs/mongodb",
+            "entryFile": "index",
+            "sourceRoot": "libs/mongodb/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/mongodb/tsconfig.lib.json"
+            }
+        },
+        "service-deps": {
+            "type": "library",
+            "root": "libs/service-deps",
+            "entryFile": "index",
+            "sourceRoot": "libs/service-deps/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/service-deps/tsconfig.lib.json"
+            }
+        },
+        "db-init": {
+            "type": "application",
+            "root": "apps/db-init",
+            "entryFile": "main",
+            "sourceRoot": "apps/db-init/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/db-init/tsconfig.app.json"
+            }
+        },
+        "security": {
+            "type": "application",
+            "root": "apps/security",
+            "entryFile": "main",
+            "sourceRoot": "apps/security/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/security/tsconfig.app.json"
+            }
+        },
+        "organization": {
+            "type": "application",
+            "root": "apps/organization",
+            "entryFile": "main",
+            "sourceRoot": "apps/organization/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/organization/tsconfig.app.json"
+            }
+        },
+        "project-management": {
+            "type": "application",
+            "root": "apps/project-management",
+            "entryFile": "main",
+            "sourceRoot": "apps/project-management/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/project-management/tsconfig.app.json"
+            }
+        },
+        "user-service": {
+            "type": "application",
+            "root": "apps/user-service",
+            "entryFile": "main",
+            "sourceRoot": "apps/user-service/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/user-service/tsconfig.app.json"
+            }
+        },
+        "resource-scheduling": {
+            "type": "application",
+            "root": "apps/resource-scheduling",
+            "entryFile": "main",
+            "sourceRoot": "apps/resource-scheduling/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/resource-scheduling/tsconfig.app.json"
+            }
+        },
+        "resource-management": {
+            "type": "application",
+            "root": "apps/resource-management",
+            "entryFile": "main",
+            "sourceRoot": "apps/resource-management/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/resource-management/tsconfig.app.json"
+            }
+        },
+        "resource-capacity": {
+            "type": "application",
+            "root": "apps/resource-capacity",
+            "entryFile": "main",
+            "sourceRoot": "apps/resource-capacity/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/resource-capacity/tsconfig.app.json"
+            }
+        },
+        "monitoring": {
+            "type": "application",
+            "root": "apps/monitoring",
+            "entryFile": "main",
+            "sourceRoot": "apps/monitoring/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/monitoring/tsconfig.app.json"
+            }
+        },
+        "gateway": {
+            "type": "application",
+            "root": "apps/gateway",
+            "entryFile": "main",
+            "sourceRoot": "apps/gateway/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/gateway/tsconfig.app.json"
+            }
+        }
+    },
+    "compilerOptions": {
+        "webpack": true,
+        "tsConfigPath": "apps/_gateway/tsconfig.app.json"
+    },
+    "monorepo": true,
+    "root": "apps/gateway"
+}
