@@ -244,7 +244,7 @@ export class DBInitService  {
                 id: apoc.create.uuid(),
                 name: "Admin",
                 isAdmin: true,
-                color: "#89B6A5
+                color: "#89B6A5"
             })
             RETURN adminGroup
         }

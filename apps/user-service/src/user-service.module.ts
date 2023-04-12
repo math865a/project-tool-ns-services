@@ -4,14 +4,18 @@ import { PresenceModule } from "./presence/presence.module";
 import { FavoritesModule } from "./favorites/favorites.module";
 import { CapacityViewModule } from "./capacity-view/capacity-view.module";
 import { MailerModule } from "./mailer/mailer.module";
+import { MongooseModule } from "@nestjs/mongoose";
+import { FeedbackModule } from "./feedback/feedback.module";
 
 @Module({
     imports: [
+        MongooseModule.forRoot(process.env.MONGO_CONN),
         ServiceModule,
         PresenceModule,
         FavoritesModule,
         CapacityViewModule,
-        MailerModule
+        MailerModule,
+        FeedbackModule,
     ],
 })
 export class UserServiceModule {}

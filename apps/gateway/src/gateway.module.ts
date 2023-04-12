@@ -13,6 +13,7 @@ import {
     WorkpackagesController,
     SchduleController,
     ResourcePortfolioController,
+    FeedbackController,
 } from "./controllers";
 import {
     CapacityBoardGateway,
@@ -41,6 +42,7 @@ import { UserServiceNats, UserServiceGateway } from "./user-service";
         SchduleController,
         ResourcePortfolioController,
         UserServiceNats,
+        FeedbackController
     ],
     providers: [
         CapacityBoardGateway,

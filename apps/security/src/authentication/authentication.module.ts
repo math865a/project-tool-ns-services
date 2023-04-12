@@ -4,6 +4,7 @@ import { CreateCredentialsHandler } from "./create-credentials";
 import { ResetPasswordHandler } from "./reset-password";
 import { UpdatePasswordHandler } from "./update-password";
 import { UpdateUsernameHandler } from "./update-username";
+import { GetCredentialsQueryHandler } from "./get-credentials";
 
 @Module({
     providers: [
@@ -11,6 +12,7 @@ import { UpdateUsernameHandler } from "./update-username";
         ResetPasswordHandler,
         UpdatePasswordHandler,
         UpdateUsernameHandler,
+        GetCredentialsQueryHandler
     ],
     controllers: [AuthenticationController],
 })

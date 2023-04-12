@@ -2,6 +2,7 @@ export * from './access-groups.controller';
 export * from './authentication.controller';
 export * from './capacity-board.controller';
 export * from './contracts.controller';
+export * from './feedback.controller';
 export * from './financialsources.controller';
 export * from './project-manager.controller';
 export * from './resource-portfolio.controller';

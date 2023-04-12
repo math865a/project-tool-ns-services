@@ -8,4 +8,5 @@ export const authenticationPatterns = {
     updatePassword: getPattern("update:password"),
     resetPassword: getPattern("reset:password"),
     validateCredentials: getPattern("validate:credentials"),
+    getCredentials: getPattern("get:credentials"),
 };

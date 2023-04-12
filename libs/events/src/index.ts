@@ -2,6 +2,7 @@ export * from './access-group';
 export * from './authentication';
 export * from './capacity-view';
 export * from './contract';
+export * from './feedback';
 export * from './financialsource';
 export * from './planning';
 export * from './presence';

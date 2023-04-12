@@ -31,6 +31,28 @@ export class UsersController {
         return await this.client.request(userPatterns.getUserConnectOptions);
     }
 
+    @Post("reset-password/:uid")
+    async resetPassword(@Param("uid") uid: string) {
+        return await this.client.request(
+            authenticationPatterns.resetPassword,
+            uid
+        );
+    }
+
+    @Post("welcome/:uid")
+    async sendWelcomeEmail(@Param("uid") uid: string) {
+        const user: any = await this.client.request(userPatterns.getUser, uid);
+        return await this.client.request(mailerPatterns.mailWelcome, {
+            email: user.email,
+            name: user.name
+        });
+    }
+
+    @Post("mail-credentials/:uid")
+    async sendCredentialsEmail(@Param("uid") uid: string) {
+        return await this.client.request(mailerPatterns.mailCredentials, uid);
+    }
+
     @Post("merge")
     async linkUser(@Body() dto: LinkUserDto, @HttpUser() uid: string) {
         return await this.client.request(userPatterns.linkUser, {
@@ -70,24 +92,6 @@ export class UsersController {
             id: uid,
             uid: httpUser,
         });
-    }
-
-    @Post("reset-password/:uid")
-    async resetPassword(@Param("uid") uid: string) {
-        return await this.client.request(
-            authenticationPatterns.resetPassword,
-            uid
-        );
-    }
-
-    @Post("welcome/:uid")
-    async sendWelcomeEmail(@Param("uid") uid: string) {
-        return await this.client.request(mailerPatterns.mailWelcome, uid);
-    }
-
-    @Post("mail-credentials/:uid")
-    async sendCredentialsEmail(@Param("uid") uid: string) {
-        return await this.client.request(mailerPatterns.mailCredentials, uid);
     }
 
     @Get("create-user-options")

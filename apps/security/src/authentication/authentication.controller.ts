@@ -7,6 +7,7 @@ import { CreateCredentialsCommand } from "./create-credentials";
 import { ResetPasswordCommand } from "./reset-password";
 import { UpdatePasswordCommand } from "./update-password";
 import { UpdateUsernameCommand } from "./update-username";
+import { GetCredentialsQuery } from "./get-credentials";
 
 
 @Controller()
@@ -26,6 +27,11 @@ export class AuthenticationController {
     @MessagePattern(authenticationPatterns.resetPassword)
     async resetPassword(@Payload() email: string) {
         return await this.commandBus.execute(new ResetPasswordCommand(email));
+    }
+
+    @MessagePattern(authenticationPatterns.getCredentials)
+    async getCredentials(@Payload() uid: string) {
+        return await this.queryBus.execute(new GetCredentialsQuery(uid));
     }
 
     @EventPattern(UserCreatedEvent.name)
