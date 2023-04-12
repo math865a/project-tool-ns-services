@@ -17,15 +17,17 @@ export class CreateCredentialsHandler
     async execute(command: CreateCredentialsCommand): Promise<void> {
         const password = generatePassword();
         const queryResult = await this.client.write(this.query, {
-            uid: command.uid,
-            email: command.email,
+            uid: command.dto.uid,
+            email: command.dto.email,
             password: password,
         });
-        if (queryResult.summary.updateStatistics.containsSystemUpdates()) {
-            this.publisher.publish(new CredentialsCreatedEvent(command.uid, command.sendWelcomeEmail));
+        if (queryResult.summary.updateStatistics.containsUpdates()) {
+            this.publisher.publish(
+                new CredentialsCreatedEvent(command.dto, command.uid)
+            );
         } else {
             this.publisher.publish(
-                new CredentialsCreationFailedEvent(command.uid)
+                new CredentialsCreationFailedEvent(command.dto, command.uid)
             );
         }
     }

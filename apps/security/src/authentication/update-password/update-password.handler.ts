@@ -1,4 +1,5 @@
 import {
+    FormErrorResponse,
     FormResponse,
     FormSuccessResponse,
 } from "@ns/definitions";
@@ -17,18 +18,51 @@ export class UpdatePasswordHandler
         private readonly publisher: DomainEvents
     ) {}
 
-    async execute({
-        password,
-        uid,
-    }: UpdatePasswordCommand): Promise<FormResponse> {
-        await this.client.write(this.query, {
+    async execute({ dto, uid }: UpdatePasswordCommand): Promise<FormResponse> {
+        const { password, oldPassword } = dto;
+        const isCurrentPassword = await this.checkCurrentPassword(
+            uid,
+            oldPassword
+        );
+        if (!isCurrentPassword) {
+            return new FormErrorResponse({
+                message: "Den angivne adgangskode er forkert",
+            });
+        }
+        const res = await this.updatePassword(uid, password);
+        if (res) {
+            this.publisher.publish(new PasswordUpdatedEvent(uid));
+            return new FormSuccessResponse({
+                message: "Dit password blev opdateret",
+            });
+        }
+        return new FormErrorResponse({ message: "Der skete en fejl" });
+    }
+
+    async checkCurrentPassword(
+        uid: string,
+        password: string
+    ): Promise<boolean> {
+        const res = await this.client.read(this.checkQuery, {
             uid: uid,
             password: password,
         });
-        this.publisher.publish(new PasswordUpdatedEvent());
-        return new FormSuccessResponse({
-            message: "Adgangskoden blev ændret.",
+        return res.records.length > 0;
+    }
+
+    private readonly checkQuery = `
+        MATCH (u:User)--(cred:Credentials)
+            WHERE u.uid = $uid
+            AND cred.password = $password
+        RETURN u
+    `;
+
+    async updatePassword(uid: string, password: string) {
+        const res = await this.client.write(this.query, {
+            uid: uid,
+            password: password,
         });
+        return res.records.length > 0;
     }
 
     query = `
@@ -38,5 +72,6 @@ export class UpdatePasswordHandler
             password: $password,
             changedAt: timestamp()
         }
+        RETURN u.uid AS uid
    `;
 }

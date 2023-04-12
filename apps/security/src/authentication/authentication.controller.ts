@@ -8,7 +8,7 @@ import { ResetPasswordCommand } from "./reset-password";
 import { UpdatePasswordCommand } from "./update-password";
 import { UpdateUsernameCommand } from "./update-username";
 import { GetCredentialsQuery } from "./get-credentials";
-
+import { UpdatePasswordDto } from "@ns/dto";
 
 @Controller()
 export class AuthenticationController {
@@ -16,17 +16,21 @@ export class AuthenticationController {
 
     @MessagePattern(authenticationPatterns.updatePassword)
     async updatePassword(
-        @Payload("password") password: string,
+        @Payload("dto") dto: UpdatePasswordDto,
         @Payload("uid") uid: string
     ) {
+        console.log(dto)
         return await this.commandBus.execute(
-            new UpdatePasswordCommand(password, uid)
+            new UpdatePasswordCommand(dto, uid)
         );
     }
 
     @MessagePattern(authenticationPatterns.resetPassword)
-    async resetPassword(@Payload() email: string) {
-        return await this.commandBus.execute(new ResetPasswordCommand(email));
+    async resetPassword(
+        @Payload("email") email: string,
+        @Payload("uid") uid?: string
+    ) {
+        return await this.commandBus.execute(new ResetPasswordCommand(email, uid));
     }
 
     @MessagePattern(authenticationPatterns.getCredentials)
@@ -38,9 +42,12 @@ export class AuthenticationController {
     async handleUserCreated(@Payload() event: UserCreatedEvent) {
         await this.commandBus.execute(
             new CreateCredentialsCommand(
-                event.body.uid,
-                event.body.email,
-                event.body.sendWelcomeMail
+                {
+                    uid: event.body.uid,
+                    email: event.body.email,
+                    sendWelcomeEmail: event.body.sendWelcomeEmail,
+                },
+                event.uid
             )
         );
     }

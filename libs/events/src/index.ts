@@ -4,6 +4,7 @@ export * from './capacity-view';
 export * from './contract';
 export * from './feedback';
 export * from './financialsource';
+export * from './mailer';
 export * from './planning';
 export * from './presence';
 export * from './project-manager';

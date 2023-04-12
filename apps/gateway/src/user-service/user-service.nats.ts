@@ -16,10 +16,10 @@ export class UserServiceNats {
     async handleUserDeactivatedEvent(event: UserDeactivatedEvent) {
         const isUserOnline = await this.client.request<boolean>(
             presencePatterns.getIsUserOnline,
-            event.uid
+            event.body.uid
         );
         if (isUserOnline) {
-            this.gateway.server.to(event.uid).emit("user-deactivated");
+            this.gateway.server.to(event.body.uid).emit("user-deactivated");
         }
     }
 }

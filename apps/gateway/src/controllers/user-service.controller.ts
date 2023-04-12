@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { HttpUser } from "@ns/decorators";
-import { UpdateUserDetailsDto } from "@ns/dto";
+import { UpdatePasswordDto, UpdateUserDetailsDto } from "@ns/dto";
 import {
     authenticationPatterns,
     authorizationPatterns,
@@ -10,10 +10,21 @@ import {
 } from "@ns/endpoints";
 import { NatsClient } from "@ns/nats";
 
-
 @Controller("user-service")
 export class UserServiceController {
     constructor(private client: NatsClient) {}
+
+    @Post("password")
+    async pass(
+        @Body() dto: UpdatePasswordDto,
+        @HttpUser() uid: string,
+    ) {
+        console.log(dto)
+        return await this.client.request(
+            authenticationPatterns.updatePassword,
+            { dto: dto, uid: uid }
+        );
+    }
 
     @Get("session")
     async getSession(@HttpUser() uid: string) {
@@ -31,16 +42,13 @@ export class UserServiceController {
         }));
     }
 
-    @Post("password")
-    async updatePassword(
-        @HttpUser() uid: string,
-        @Body("password") password: string
-    ) {
-        return await this.client.request(
-            authenticationPatterns.updatePassword,
-            { password, uid }
-        );
+    @Get("test")
+    test(@HttpUser() uid: string) {
+        console.log(uid)
+        return {uid: uid};
     }
+
+
 
     @Post()
     async updateDetails(
@@ -52,6 +60,4 @@ export class UserServiceController {
             uid,
         });
     }
-
-    
 }

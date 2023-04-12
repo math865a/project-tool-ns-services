@@ -10,5 +10,5 @@ export class CreateUserDto {
     public readonly isResource: boolean;
     public readonly connect: string;
     public readonly resourceDto?: Omit<CreateResourceDto, "id" | "name" | "color">;
-    public readonly sendWelcomeMail: boolean;
+    public readonly sendWelcomeEmail: boolean;
 }

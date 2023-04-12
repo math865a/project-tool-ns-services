@@ -1,7 +1,8 @@
+import { CreateCredentialsDto } from "@ns/dto";
+
 export class CreateCredentialsCommand {
     constructor(
-        public readonly uid: string,
-        public readonly email: string,
-        public readonly sendWelcomeEmail: boolean
+        public readonly dto: CreateCredentialsDto,
+        public readonly uid: string
     ) {}
 }

@@ -1,7 +1,4 @@
-import {
-    FormResponse,
-    FormSuccessResponse,
-} from "@ns/definitions";
+import { FormResponse, FormSuccessResponse } from "@ns/definitions";
 import { Controller } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -54,18 +51,8 @@ export class UsersNatsController {
                 UpdateUserAccessGroupsCommand,
                 FormResponse
             >(new UpdateUserAccessGroupsCommand(dto.accessGroups, dto.uid)),
-            this.commandBus.execute<ToggleActiveStatusCommand, FormResponse>(
-                new ToggleActiveStatusCommand(
-                    { uid: dto.uid, isDeactivated: dto.isDeactivated },
-                    uid
-                )
-            ),
         ]).then((results) => {
-            if (
-                results[0].status === "ok" &&
-                results[1].status === "ok" &&
-                results[2].status === "ok"
-            ) {
+            if (results[0].status === "ok" && results[1].status === "ok") {
                 return new FormSuccessResponse({
                     message: "Brugeren blev opdateret",
                 });
@@ -89,22 +76,19 @@ export class UsersNatsController {
     }
 
     @MessagePattern(patterns.deactivateUser)
-    async deactivate(
-        @Payload("dto") dto: ToggleActiveStatusDto,
-        @Payload("uid") uid: string
-    ) {
+    async deactivate(@Payload("id") id: string, @Payload("uid") uid: string) {
         return await this.commandBus.execute(
-            new ToggleActiveStatusCommand(dto, uid)
+            new ToggleActiveStatusCommand({ uid: id, isDeactivated: true }, uid)
         );
     }
 
     @MessagePattern(patterns.activateUser)
-    async activate(
-        @Payload("dto") dto: ToggleActiveStatusDto,
-        @Payload("uid") uid: string
-    ) {
+    async activate(@Payload("id") id: string, @Payload("uid") uid: string) {
         return await this.commandBus.execute(
-            new ToggleActiveStatusCommand(dto, uid)
+            new ToggleActiveStatusCommand(
+                { uid: id, isDeactivated: false },
+                uid
+            )
         );
     }
 

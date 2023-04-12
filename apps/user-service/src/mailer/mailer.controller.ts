@@ -1,56 +1,39 @@
 import { Controller } from "@nestjs/common";
-import { MessagePattern } from "@nestjs/microservices";
-import { MaiLCredentialsDto } from "@ns/dto";
+import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 import {
-    authenticationPatterns,
-    mailerPatterns as patterns,
-    userPatterns,
+    mailerPatterns as patterns
 } from "@ns/endpoints";
+import {
+    CredentialsCreatedEvent, PasswordResetEvent
+} from "@ns/events";
 import { SendgridService } from "./sendgrid.service";
-import { getCredentialsHTML } from "./templates";
-import { MailDataRequired } from "@sendgrid/mail";
-import { NatsClient } from "@ns/nats";
 
 @Controller()
 export class MailerNatsController {
-    constructor(private mailer: SendgridService, private client: NatsClient) {}
+    constructor(private mailer: SendgridService) {}
 
     @MessagePattern(patterns.mailCredentials)
-    async mailCredentials(uid: string) {
-        const data = await Promise.all([
-            this.client.request<any>(userPatterns.getUser, uid),
-            this.client.request<any>(
-                authenticationPatterns.getCredentials,
-                uid
-            ),
-        ]).then((res) => {
-            if (res[0] && res[1]) {
-                return {
-                    email: res[0].email,
-                    name: res[0].name,
-                    username: res[1].username,
-                    password: res[1].password,
-                };
-            }
-            return null;
-        });
-        if (data) {
-            const html = getCredentialsHTML(
-                data.name,
-                data.username,
-                data.password
-            );
+    async mailCredentials(
+        @Payload("to") id: string,
+        @Payload("uid") uid?: string
+    ) {
+        return await this.mailer.mailCredentials(id, uid);
+    }
 
-            const mail: MailDataRequired = {
-                to: "mathias.oehrgaard@mohconsulting.dk",
-                from: "ext.mathias.oehrgaard@eltelnetworks.com",
-                subject: "Adgangsoplysninger til Project Tool",
-                html: html
-            };
+    @MessagePattern(patterns.mailWelcome)
+    async mailWelcome(@Payload("to") id: string, @Payload("uid") uid: string) {
+        return await this.mailer.mailWelcome(id, uid);
+    }
 
-            await this.mailer.send(mail);
-            return { result: true };
+    @EventPattern(CredentialsCreatedEvent.name)
+    async handleCredentialsCreated(event: CredentialsCreatedEvent) {
+        if (event.body.sendWelcomeEmail) {
+            await this.mailer.mailWelcome(event.body.uid, event.uid);
         }
-        return {result: false}
+    }
+
+    @EventPattern(PasswordResetEvent.name)
+    async handlePasswordReset(event: PasswordResetEvent) {
+        await this.mailer.mailCredentials(event.body.uid, event.uid);
     }
 }

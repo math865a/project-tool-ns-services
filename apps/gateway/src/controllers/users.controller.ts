@@ -15,42 +15,47 @@ import { NatsClient } from "@ns/nats";
 export class UsersController {
     constructor(private client: NatsClient) {}
 
-    @Get()
-    async getView(@HttpUser() uid: string) {
-        return await Promise.all([
-            this.client.request(userPatterns.getUsersView, uid),
-            this.client.request(accessGroupPatterns.getAccessGroupOptions),
-        ]).then((res) => ({
-            rows: res[0],
-            accessGroupOptions: res[1],
-        }));
+    @Post("activate/:uid")
+    async activateUser(@Param("uid") id: string, @HttpUser() uid: string) {
+        return await this.client.request(userPatterns.activateUser, {
+            id,
+            uid,
+        });
     }
 
-    @Get("merge-options")
-    async getConnectOptions() {
-        return await this.client.request(userPatterns.getUserConnectOptions);
+    @Post("deactivate/:uid")
+    async deactivateUser(@Param("uid") id: string, @HttpUser() uid: string) {
+        return await this.client.request(userPatterns.deactivateUser, {
+            id,
+            uid,
+        });
     }
 
-    @Post("reset-password/:uid")
-    async resetPassword(@Param("uid") uid: string) {
-        return await this.client.request(
-            authenticationPatterns.resetPassword,
-            uid
-        );
+    @Post("reset-password")
+    async resetPassword(@Body("email") email: string, @HttpUser() uid: string) {
+        return await this.client.request(authenticationPatterns.resetPassword, {
+            email,
+            uid,
+        });
     }
 
-    @Post("welcome/:uid")
-    async sendWelcomeEmail(@Param("uid") uid: string) {
-        const user: any = await this.client.request(userPatterns.getUser, uid);
+    @Post("mail-welcome/:uid")
+    async sendWelcomeEmail(@Param("uid") to: string, @HttpUser() uid: string) {
         return await this.client.request(mailerPatterns.mailWelcome, {
-            email: user.email,
-            name: user.name
+            to,
+            uid,
         });
     }
 
     @Post("mail-credentials/:uid")
-    async sendCredentialsEmail(@Param("uid") uid: string) {
-        return await this.client.request(mailerPatterns.mailCredentials, uid);
+    async sendCredentialsEmail(
+        @Param("uid") to: string,
+        @HttpUser() uid: string
+    ) {
+        return await this.client.request(mailerPatterns.mailCredentials, {
+            to,
+            uid,
+        });
     }
 
     @Post("merge")
@@ -92,6 +97,22 @@ export class UsersController {
             id: uid,
             uid: httpUser,
         });
+    }
+
+    @Get()
+    async getView(@HttpUser() uid: string) {
+        return await Promise.all([
+            this.client.request(userPatterns.getUsersView, uid),
+            this.client.request(accessGroupPatterns.getAccessGroupOptions),
+        ]).then((res) => ({
+            rows: res[0],
+            accessGroupOptions: res[1],
+        }));
+    }
+
+    @Get("merge-options")
+    async getConnectOptions() {
+        return await this.client.request(userPatterns.getUserConnectOptions);
     }
 
     @Get("create-user-options")
