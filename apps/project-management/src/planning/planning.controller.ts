@@ -9,7 +9,7 @@ import {
     UpdateActivityColorDto,
     UpdateActivityNameDto,
     UpdateAllocationDto,
-    UpdatePeriodDto
+    UpdatePeriodDto,
 } from "@ns/dto";
 import { planningPatterns as patterns } from "@ns/endpoints";
 import {
@@ -24,7 +24,6 @@ import {
     UpdatePeriodCommand,
 } from "./commands";
 import { AllocationQuery, PlanQuery } from "./queries";
-
 
 @Controller()
 export class PlanningNatsController {
@@ -88,8 +87,9 @@ export class PlanningNatsController {
         @Payload("dto") dto: CreateAssignmentDto,
         @Payload("uid") uid: string
     ) {
-        return await this.commandBus.execute(new CreateAssignmentCommand(dto, uid));
-
+        return await this.commandBus.execute(
+            new CreateAssignmentCommand(dto, uid)
+        );
     }
 
     @MessagePattern(patterns.deleteAssignment)
@@ -108,7 +108,7 @@ export class PlanningNatsController {
         @Payload("uid") uid: string
     ) {
         return await this.commandBus.execute(
-            new UpdateActivityNameCommand(dto)
+            new UpdateActivityNameCommand(dto, uid)
         );
     }
 
@@ -118,7 +118,7 @@ export class PlanningNatsController {
         @Payload("uid") uid: string
     ) {
         return await this.commandBus.execute(
-            new UpdateActivityColorCommand(dto)
+            new UpdateActivityColorCommand(dto, uid)
         );
     }
 

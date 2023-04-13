@@ -9,5 +9,4 @@ export class MongoClient {
         process.env.NODE_ENV === "production" ? "prod" : "dev"
     );
     public events = this.db.collection("events");
-    public feedback = this.db.collection("feedback");
 }

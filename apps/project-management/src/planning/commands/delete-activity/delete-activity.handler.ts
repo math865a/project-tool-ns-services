@@ -21,7 +21,7 @@ export class DeleteActivityHandler
         });
         const result = queryResult.records[0].get("result");
         if (result){
-            this.publisher.publish(new ActivityDeletedEvent())
+            this.publisher.publish(new ActivityDeletedEvent({id: command.activityId}, command.uid))
             return new FormSuccessResponse({message: "Aktiviteten blev slettet."})
         }
         return new FormErrorResponse({message: "Der skete en fejl."})

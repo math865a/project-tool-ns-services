@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common";
-import { QueryBus } from "@nestjs/cqrs";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import {
     CreateContractCommand,
@@ -13,7 +13,7 @@ import { contractPatterns as patterns } from "@ns/endpoints";
 
 @Controller()
 export class ContractsNastController {
-    constructor(private queryBus: QueryBus) {}
+    constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
     @MessagePattern(patterns.getContractOptions)
     async getContractOptions() {
@@ -35,7 +35,7 @@ export class ContractsNastController {
         @Payload("dto") dto: CreateContractDto,
         @Payload("uid") uid: string
     ) {
-        return await this.queryBus.execute(new CreateContractCommand(dto, uid));
+        return await this.commandBus.execute(new CreateContractCommand(dto, uid));
     }
 
     @MessagePattern(patterns.updateContract)
@@ -43,7 +43,7 @@ export class ContractsNastController {
         @Payload("dto") dto: UpdateContractDto,
         @Payload("uid") uid: string
     ) {
-        return await this.queryBus.execute(new UpdateContractCommand(dto, uid));
+        return await this.commandBus.execute(new UpdateContractCommand(dto, uid));
     }
 
     @MessagePattern(patterns.deleteContract)
@@ -51,6 +51,6 @@ export class ContractsNastController {
         @Payload("id") id: string,
         @Payload("uid") uid: string
     ) {
-        return await this.queryBus.execute(new DeleteContractCommand(id, uid));
+        return await this.commandBus.execute(new DeleteContractCommand(id, uid));
     }
 }

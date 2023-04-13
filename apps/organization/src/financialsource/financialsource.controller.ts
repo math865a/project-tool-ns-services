@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
     CreateFinancialSourceCommand,
@@ -16,7 +16,7 @@ import { financialsourcePatterns as patterns } from '@ns/endpoints';
 
 @Controller()
 export class FinancialSourcesNatsController {
-    constructor(private queryBus: QueryBus) {}
+    constructor(private queryBus: QueryBus, private commandBus: CommandBus) {}
 
     @MessagePattern(patterns.getFinancialSourceOptions)
     async getFinancialSourceOptions() {
@@ -38,7 +38,7 @@ export class FinancialSourcesNatsController {
         @Payload('dto') dto: CreateFinancialSourceDto,
         @Payload('uid') uid: string,
     ) {
-        return await this.queryBus.execute(
+        return await this.commandBus.execute(
             new CreateFinancialSourceCommand(dto, uid),
         );
     }
@@ -48,7 +48,7 @@ export class FinancialSourcesNatsController {
         @Payload('dto') dto: UpdateFinancialSourceDto,
         @Payload('uid') uid: string,
     ) {
-        return await this.queryBus.execute(
+        return await this.commandBus.execute(
             new UpdateFinancialSourceCommand(dto, uid),
         );
     }
@@ -58,7 +58,7 @@ export class FinancialSourcesNatsController {
         @Payload('id') id: string,
         @Payload('uid') uid: string,
     ) {
-        return await this.queryBus.execute(
+        return await this.commandBus.execute(
             new DeleteFinancialSourceCommand(id, uid),
         );
     }

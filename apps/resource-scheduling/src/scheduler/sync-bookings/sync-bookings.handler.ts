@@ -23,7 +23,16 @@ export class SyncBookingsHandler
         const agentId: string | undefined =
             queryResult.records[0]?.get("agentId");
         if (workpackageId && agentId) {
-            this.publisher.publish(new BookingsSyncedEvent());
+            this.publisher.publish(
+                new BookingsSyncedEvent(
+                    {
+                        allocationId: command.allocationId,
+                        workpackageId: workpackageId,
+                        agentId: agentId,
+                    },
+                    command.uid
+                )
+            );
         }
     }
 

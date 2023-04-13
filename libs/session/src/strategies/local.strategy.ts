@@ -19,7 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
             new ValidateCredentialsQuery(email, password)
         );
         if (!uid) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("Der findes ingen bruger med denne email og/eller adgangskode");
         }
         return { uid };
     }

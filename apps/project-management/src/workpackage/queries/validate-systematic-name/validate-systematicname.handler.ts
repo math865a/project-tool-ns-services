@@ -1,8 +1,8 @@
 import { Neo4jClient } from "@ns/neo4j";
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { QueryHandler, IQueryHandler } from "@nestjs/cqrs";
 
-import { ValidateSystematicNameQuery } from './validate-systematicname.query';
-import { FormErrorResponse } from '@ns/definitions';
+import { ValidateSystematicNameQuery } from "./validate-systematicname.query";
+import { FormErrorResponse } from "@ns/definitions";
 
 @QueryHandler(ValidateSystematicNameQuery)
 export class ValidateSystematicNameQueryHandler
@@ -15,19 +15,22 @@ export class ValidateSystematicNameQueryHandler
         contractId,
         financialSourceId,
         serialNo,
+        id = null,
     }: ValidateSystematicNameQuery): Promise<FormErrorResponse | string> {
         const queryResult = await this.client.read(this.validateQuery, {
             contractId: contractId,
             financialSourceId: financialSourceId,
             serialNo: serialNo,
+            id: id,
         });
         const rec = queryResult.records[0];
-        if (rec.get('isUnique') === true) {
-            return rec.get('systematicName') as string;
+        console.log(rec)
+        if (rec.get("isUnique") === true) {
+            return rec.get("systematicName") as string;
         }
         return new FormErrorResponse({
             message:
-                'Der findes allerede en arbejdspakke med denne kontrakt, finanskilde og serienummer. Denne kombination skal være unik.',
+                "Der findes allerede en arbejdspakke med denne kontrakt, finanskilde og serienummer. Denne kombination skal være unik.",
         });
     }
 
@@ -38,6 +41,7 @@ export class ValidateSystematicNameQueryHandler
             CALL {
                 WITH systematicName
                 OPTIONAL MATCH (w:Workpackage {systematicName: systematicName})
+                    WHERE NOT w.id = $id
                 WITH collect(w) as matches
                 RETURN CASE 
                     WHEN size(matches) > 0 THEN false

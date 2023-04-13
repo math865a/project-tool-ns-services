@@ -20,10 +20,10 @@ export class ValidateCredentialsHandler
         });
         const uid =  queryResult.records[0]?.get('uid') ?? null;
         if (uid){
-            this.publisher.publish(new ValidCredentialsEvent())
+            this.publisher.publish(new ValidCredentialsEvent(uid))
             
         } else {
-            this.publisher.publish(new InvalidCredentialsEvent())
+            this.publisher.publish(new InvalidCredentialsEvent(email, password))
         }
         return {uid};
     }

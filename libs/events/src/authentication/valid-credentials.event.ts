@@ -1,7 +1,7 @@
 import { EventBase } from "@ns/nats";
 
 export class ValidCredentialsEvent extends EventBase {
-    constructor(){
+    constructor(public readonly uid: string){
         super()
     }
 }

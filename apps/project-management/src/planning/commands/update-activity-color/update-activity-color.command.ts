@@ -3,5 +3,5 @@ import {
 } from '@ns/dto';
 
 export class UpdateActivityColorCommand {
-    constructor(public readonly dto: UpdateActivityColorDto) {}
+    constructor(public readonly dto: UpdateActivityColorDto, public readonly uid: string) {}
 }

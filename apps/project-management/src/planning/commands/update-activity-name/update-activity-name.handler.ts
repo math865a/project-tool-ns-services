@@ -24,7 +24,7 @@ export class UpdateActivityNameHandler
             name: command.dto.name,
         });
         if (queryResult.summary.updateStatistics.containsUpdates()) {
-            this.publisher.publish(new ActivityUpdatedEvent());
+            this.publisher.publish(new ActivityUpdatedEvent(command.dto, command.uid));
             return new FormSuccessResponse({ message: "Navnet er opdateret." });
         }
         return new FormErrorResponse({

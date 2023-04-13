@@ -24,7 +24,7 @@ export class CreateAssignmentHandler
             uid: command.uid,
         });
         if (queryResult.summary.updateStatistics.containsUpdates()) {
-            this.publisher.publish(new AssignmentCreatedEvent());
+            this.publisher.publish(new AssignmentCreatedEvent(command.dto, command.uid));
             return new FormSuccessResponse({message: "Tildelingen blev oprettet."});
         }
         return new FormErrorResponse({ message: "Der skete en fejl." });

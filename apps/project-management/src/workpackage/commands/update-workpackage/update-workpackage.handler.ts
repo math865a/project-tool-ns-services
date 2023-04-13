@@ -28,15 +28,17 @@ export class UpdateWorkpackageHandler
             new ValidateSystematicNameQuery(
                 command.dto.contractId,
                 command.dto.financialSourceId,
-                command.dto.serialNo
+                command.dto.serialNo,
+                command.dto.workpackageId
             )
         );
-        if (systematicName instanceof FormErrorResponse) {
+        if (typeof systematicName !== "string") {
             return systematicName;
         }
 
         const result = await this.client.write(this.query, {
             ...command.dto,
+            systematicName: systematicName,
             uid: command.uid,
         });
         if (result.summary.updateStatistics.containsUpdates()) {

@@ -26,7 +26,9 @@ export class CreateActivityHandler
             uid: command.uid,
         });
         if (queryResult.summary.updateStatistics.containsUpdates()) {
-            this.publisher.publish(new ActivityCreatedEvent());
+            this.publisher.publish(
+                new ActivityCreatedEvent(command.dto, command.uid)
+            );
             return new FormSuccessResponse({
                 message: "Aktiviteten blev oprettet.",
             });

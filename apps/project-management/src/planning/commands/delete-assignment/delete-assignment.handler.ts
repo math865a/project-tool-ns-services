@@ -15,7 +15,10 @@ export class DeleteAssignmentHandler
 {
     constructor(private client: Neo4jClient, private publisher: DomainEvents) {}
 
-    async execute({dto}: DeleteAssignmentCommand): Promise<FormResponse> {
+    async execute({
+        dto,
+        uid,
+    }: DeleteAssignmentCommand): Promise<FormResponse> {
         const queryResult = await this.client.write(this.query, {
             agentId: dto.agentId,
             taskId: dto.taskId,
@@ -23,7 +26,7 @@ export class DeleteAssignmentHandler
         const workpackageId = queryResult.records[0]?.get("workpackageId");
         const agentId = queryResult.records[0]?.get("agentId");
         if (agentId && workpackageId) {
-            this.publisher.publish(new AssignmentDeletedEvent());
+            this.publisher.publish(new AssignmentDeletedEvent(dto, uid));
             return new FormSuccessResponse({
                 message: "Teammedlemmet blev fjernet fra opgaven.",
             });
