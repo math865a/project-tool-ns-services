@@ -22,7 +22,7 @@ import { Server } from "socket.io";
     namespace: "capacity-board",
     cors: {
         origin: "*",
-    },
+    }
 })
 export class CapacityBoardGateway {
     constructor(private client: NatsClient) {}

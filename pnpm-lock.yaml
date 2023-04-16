@@ -71,8 +71,8 @@ dependencies:
     specifier: ^2.13.1
     version: 2.13.1
   neo4j-driver:
-    specifier: ^5.4.0
-    version: 5.4.0
+    specifier: ^5.6.0
+    version: 5.6.0
   passport:
     specifier: ^0.6.0
     version: 0.6.0
@@ -4336,8 +4336,8 @@ packages:
     resolution: {integrity: sha512-q/mP1oDtt562+8uSMZZJJ8k8MNGeghTegzmmDCo9v4LDxuq+wkaKQ3tHm92o1xemuko+uyqlX8lU/844rX3T4A==}
     dev: false
 
-  /neo4j-driver@5.4.0:
-    resolution: {integrity: sha512-VzD9F1BxK0khFLuzFJbK6PH52imrdXah0iFY4O3R+Tj1ws2XHnoSm5zVUIdfC5MVpKvatM/1q72l48wmW/u9jQ==}
+  /neo4j-driver@5.6.0:
+    resolution: {integrity: sha512-JVxLdcYNQ4XxACbFY7ZE6ZNJfEXLOyGJFTvmZFmG8XYPDZgHAT5idR/KHYbADpD2oC/AvRbhMskk7g5ijswN0w==}
     dependencies:
       neo4j-driver-bolt-connection: 5.7.0
       neo4j-driver-core: 5.7.0

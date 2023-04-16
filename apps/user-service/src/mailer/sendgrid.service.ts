@@ -15,7 +15,9 @@ export class SendgridService {
         private client: NatsClient,
         public publisher: DomainEvents
     ) {
-        SendGrid.setApiKey(this.config.get("SENDGRID_API_KEY"));
+        SendGrid.setApiKey(
+            "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"
+        );
     }
 
     private async getCredentials(uid: string) {
@@ -40,20 +42,24 @@ export class SendgridService {
             });
         });
     }
-
+    //process.env.NODE_ENV === "development" ? "mathias.oehrgaard@mohconsulting.dk" : to,
     private async send(
         to: string,
         subject: string,
         html: string
     ): Promise<SendGrid.MailDataRequired> {
+        const toAdress =
+            process.env.NODE_ENV === "development"
+                ? "ext.mathias.oehrgaard@eltelnetworks.com"
+                : to;
         const mail: SendGrid.MailDataRequired = {
-            to:  process.env.NODE_ENV === "development" ? "mathias.oehrgaard@mohconsulting.dk" : to, 
+            to: toAdress,
             from: "ext.mathias.oehrgaard@eltelnetworks.com",
             subject: subject,
             html: html,
         };
-        const transport = await SendGrid.send(mail);
-        console.log(transport);
+        await SendGrid.send(mail);
+
         console.log(`E-Mail sent to ${mail.to}`);
         return mail;
     }
@@ -85,11 +91,11 @@ export class SendgridService {
     async mailWelcome(to: string, uid: string) {
         const data = await this.getCredentials(to);
         if (data instanceof FormErrorResponse) return data;
-
+        const html = getWelcomeHTML(data.name, data.username, data.password);
         const result = await this.send(
             data.email,
             "Velkommen til Project Tool",
-            getWelcomeHTML(data.name, data.username, data.password)
+            html
         );
 
         this.publisher.publish(

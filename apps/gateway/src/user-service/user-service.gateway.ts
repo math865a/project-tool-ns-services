@@ -26,7 +26,7 @@ import { Server, Socket } from "socket.io";
     namespace: "user-service",
     cors: {
         origin: "*",
-    },
+    }
 })
 export class UserServiceGateway
     implements OnGatewayConnection, OnGatewayDisconnect

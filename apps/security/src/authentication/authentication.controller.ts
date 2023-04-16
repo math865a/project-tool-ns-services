@@ -55,7 +55,7 @@ export class AuthenticationController {
     @EventPattern(UserDetailsUpdatedEvent.name)
     async handleUserDetailsUpdated(@Payload() event: UserDetailsUpdatedEvent) {
         await this.commandBus.execute(
-            new UpdateUsernameCommand(event.body.email, event.uid)
+            new UpdateUsernameCommand(event.body.email, event.body.uid)
         );
     }
 }

@@ -6,15 +6,13 @@ export function getCredentialsHTML(
     return `
         <div>
         <p>
-            Hej ${name.split(" ")[0]}},
+            Hej ${name.split(" ")[0]},
         </p>
-        <br/>
         <p> 
             Nedenstående finder du dine adgangsoplysninger til 
-            <a href="http://100.64.100.70:3001/login">
+            <a href="https://project-tool.dk/login">
                 Project Tool
-            </a>
-            .
+            </a>.
         </p>
         
         <p> 
@@ -22,20 +20,16 @@ export function getCredentialsHTML(
                 Brugernavn: 
             </strong>
             ${username}
-        </p>
-        <p> 
+        <br style="line-height: 10px"/>
             <strong>
                 Password: 
             </strong> 
             ${password}
         </p>
-
-        <br/>
         <p> 
             Med venlig hilsen 
-        </p>
-        <p> 
-            Project Tool 
+        <br style="line-height: 10px"/>
+            Project Tool
         </p>
     </div>
     `;

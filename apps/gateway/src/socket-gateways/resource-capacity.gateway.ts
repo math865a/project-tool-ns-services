@@ -13,7 +13,7 @@ import { Server } from "socket.io";
     namespace: "resource-capacity",
     cors: {
         origin: "*",
-    },
+    }
 })
 export class ResourceCapacityGateway {
     constructor(private client: NatsClient) {}

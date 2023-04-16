@@ -45,7 +45,15 @@ export class UsersNatsController {
     ) {
         return await Promise.all([
             this.commandBus.execute<UpdateUserDetailsCommand, FormResponse>(
-                new UpdateUserDetailsCommand(dto, uid)
+                new UpdateUserDetailsCommand(
+                    {
+                        uid: dto.uid,
+                        name: dto.name,
+                        email: dto.email,
+                        color: dto.color,
+                    },
+                    uid
+                )
             ),
             this.commandBus.execute<
                 UpdateUserAccessGroupsCommand,

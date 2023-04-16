@@ -15,11 +15,8 @@ export class UserServiceController {
     constructor(private client: NatsClient) {}
 
     @Post("password")
-    async pass(
-        @Body() dto: UpdatePasswordDto,
-        @HttpUser() uid: string,
-    ) {
-        console.log(dto)
+    async pass(@Body() dto: UpdatePasswordDto, @HttpUser() uid: string) {
+        console.log(dto);
         return await this.client.request(
             authenticationPatterns.updatePassword,
             { dto: dto, uid: uid }
@@ -44,19 +41,20 @@ export class UserServiceController {
 
     @Get("test")
     test(@HttpUser() uid: string) {
-        console.log(uid)
-        return {uid: uid};
+        console.log(uid);
+        return { uid: uid };
     }
-
-
 
     @Post()
     async updateDetails(
-        @Body() dto: UpdateUserDetailsDto,
+        @Body() dto: Omit<UpdateUserDetailsDto, "uid">,
         @HttpUser() uid: string
     ) {
         return await this.client.request(userPatterns.updateUserDetails, {
-            dto,
+            dto: {
+                ...dto,
+                uid,
+            },
             uid,
         });
     }

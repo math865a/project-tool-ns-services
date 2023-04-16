@@ -14,7 +14,11 @@ export class PresenceNatsController {
     async registerPresence(event: UserJoinedEvent) {
         console.log("Register presence", event);
         await this.commandBus.execute(
-            new TogglePresenceCommand(true, event.timestamp, event.uid)
+            new TogglePresenceCommand(
+                true,
+                event.timestamp.getTime(),
+                event.uid
+            )
         );
     }
 
@@ -22,7 +26,11 @@ export class PresenceNatsController {
     async registerAbsence(event: UserLeftEvent) {
         console.log("Register absence", event);
         await this.commandBus.execute(
-            new TogglePresenceCommand(false, event.timestamp, event.uid)
+            new TogglePresenceCommand(
+                false,
+                event.timestamp.getTime(),
+                event.uid
+            )
         );
     }
 

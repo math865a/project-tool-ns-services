@@ -11,16 +11,39 @@ export class UpdateUsernameHandler
     constructor(private client: Neo4jClient, private publisher: DomainEvents) {}
 
     async execute(command: UpdateUsernameCommand): Promise<void> {
-        await this.client.write(this.query, {
-            email: command.email,
-            uid: command.uid,
-        });
-        this.publisher.publish(
-            new UsernameUpdatedEvent(command.email, command.uid)
+        const hasEmailChanged = await this.hasEmailChanged(
+            command.uid,
+            command.email
         );
+        if (hasEmailChanged) {
+            await this.updateUsername(command.uid, command.email);
+        }
     }
 
-    query = `
+    async hasEmailChanged(uid: string, email: string) {
+        const result = await this.client.read(this.getCurrentEmail, {
+            uid: uid,
+        });
+        return result.records[0].get("currentMail") !== email;
+    }
+
+    getCurrentEmail = `
+        MATCH (u:User)-(c:Credentials)
+            WHERE u.uid = $uid
+        RETURN u.username as currentMail
+    `;
+
+    async updateUsername(uid: string, email: string) {
+        const result = await this.client.write(this.updateUsernameQuery, {
+            email: email.trim().toLowerCase(),
+            uid: uid,
+        });
+        if (result.summary.updateStatistics.containsUpdates()) {
+            this.publisher.publish(new UsernameUpdatedEvent(email, uid));
+        }
+    }
+
+    updateUsernameQuery = `
         MATCH (u:User)--(cred:Credentials)
             WHERE u.uid = $uid
         SET cred.username = $email

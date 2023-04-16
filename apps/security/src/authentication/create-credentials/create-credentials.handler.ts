@@ -16,11 +16,12 @@ export class CreateCredentialsHandler
 
     async execute(command: CreateCredentialsCommand): Promise<void> {
         const password = generatePassword();
-        const queryResult = await this.client.write(this.query, {
-            uid: command.dto.uid,
-            email: command.dto.email,
-            password: password,
-        });
+        const params = this.prepareParams(
+            command.dto.uid,
+            command.dto.email,
+            password
+        );
+        const queryResult = await this.client.write(this.query, params);
         if (queryResult.summary.updateStatistics.containsUpdates()) {
             this.publisher.publish(
                 new CredentialsCreatedEvent(command.dto, command.uid)
@@ -30,6 +31,14 @@ export class CreateCredentialsHandler
                 new CredentialsCreationFailedEvent(command.dto, command.uid)
             );
         }
+    }
+
+    prepareParams(uid: string, email: string, password: string) {
+        return {
+            uid: uid,
+            email: email.trim().toLowerCase(),
+            password: password,
+        };
     }
 
     query = `

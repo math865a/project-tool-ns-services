@@ -27,7 +27,6 @@ export class VerifySessionHandler
             const payload = await this.jwtService.verifyAsync<JwtTokenPayload>(
                 token
             );
-            this.publisher.publish(new JwtTokenVerifiedEvent());
             return payload;
         } catch (e) {
             this.publisher.publish(new InvalidJwtTokenEvent());

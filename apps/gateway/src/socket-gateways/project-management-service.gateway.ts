@@ -39,7 +39,7 @@ import {
     namespace: "project-management",
     cors: {
         origin: "*",
-    },
+    }
 })
 export class ProjectManagementGateway {
     constructor(private client: NatsClient) {}
