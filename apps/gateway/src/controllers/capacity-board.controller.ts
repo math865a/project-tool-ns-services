@@ -1,7 +1,12 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { HttpUser } from "@ns/decorators";
-import { capacityBoardPatterns, capacityViewPatterns } from "@ns/endpoints";
+import {
+    capacityBoardPatterns,
+    capacityViewPatterns,
+    schedulePatterns,
+} from "@ns/endpoints";
 import { NatsClient } from "@ns/nats";
+import { DateTime as dt } from "luxon";
 
 @Controller("capacity-board")
 export class CapacityBoardController {
@@ -16,5 +21,22 @@ export class CapacityBoardController {
             ...(res[0] as Object),
             views: res[1],
         }));
+    }
+
+    @Get(":rowId/:startDate/:endDate")
+    async getDetail(
+        @Param("rowId") rowId: string,
+        @Param("startDate") startDate: string,
+        @Param("endDate") endDate: string
+    ) {
+        const dto = {
+            resourceId: rowId,
+            startDate: startDate,
+            endDate: dt.fromISO(endDate).minus({ days: 1 }).toISODate(),
+        };
+        return await this.client.request(
+            schedulePatterns.getWorkpackageTotals,
+            dto
+        );
     }
 }

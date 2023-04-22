@@ -6,6 +6,7 @@ import { CapacityViewModule } from "./capacity-view/capacity-view.module";
 import { MailerModule } from "./mailer/mailer.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { FeedbackModule } from "./feedback/feedback.module";
+import { ActivityModule } from "./activity/activity.module";
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { FeedbackModule } from "./feedback/feedback.module";
         CapacityViewModule,
         MailerModule,
         FeedbackModule,
+        ActivityModule
     ],
 })
 export class UserServiceModule {}

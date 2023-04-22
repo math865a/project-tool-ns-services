@@ -1,4 +1,5 @@
 export * from './access-group';
+export * from './activity';
 export * from './authentication';
 export * from './capacity-board';
 export * from './capacity-view';

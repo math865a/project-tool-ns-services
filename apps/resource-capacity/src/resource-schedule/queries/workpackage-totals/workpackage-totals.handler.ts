@@ -7,6 +7,7 @@ export class WorkpackageTotalsQueryHandler implements IQueryHandler<WorkpackageT
     constructor(private client: Neo4jClient){}
 
     async execute({instruction}: WorkpackageTotalsQuery): Promise<any> {
+        console.log(instruction)
         const queryResult = await this.client.read(this.query, instruction)
         return queryResult.records.map(d => d.get("result"))
     }

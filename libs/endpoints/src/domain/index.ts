@@ -1,4 +1,5 @@
 export * from './access-group.endpoints';
+export * from './activity.endpoints';
 export * from './authentication.endpoints';
 export * from './authorization.endpoints';
 export * from './calendar.endpoints';
