@@ -13,6 +13,8 @@ export class WorkpackageViewQueryHandler
         return queryResult.records.map((d) => d.get('row'));
     }
 
+    
+
     query = `
         MATCH (defaultPM:DefaultProjectManager)
         MATCH (w:Workpackage)--(plan:Plan)
