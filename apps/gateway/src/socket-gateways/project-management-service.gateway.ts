@@ -12,8 +12,6 @@ import {
     CreateAllocationDto,
     CreateAssignmentDto,
     DeleteAssignmentDto,
-    UpdateActivityColorDto,
-    UpdateActivityNameDto,
     UpdateAllocationDto,
     UpdatePeriodDto,
     UpdateWorkpackageDto,
@@ -23,6 +21,7 @@ import {
     SwapTeamMemberDto,
     UpdateBookingStageDto,
     UpdateStageDto,
+    UpdateActivityDto,
 } from "@ns/dto";
 import { NatsClient } from "@ns/nats";
 import { WsGuard } from "@ns/session";
@@ -39,7 +38,7 @@ import {
     namespace: "project-management",
     cors: {
         origin: "*",
-    }
+    },
 })
 export class ProjectManagementGateway {
     constructor(private client: NatsClient) {}
@@ -119,7 +118,7 @@ export class ProjectManagementGateway {
     @UseGuards(WsGuard)
     @SubscribeMessage("get:team-options")
     async getTeamOptions(@MessageBody() workpackageId: string) {
-        console.log(workpackageId)
+        console.log(workpackageId);
         return await this.client.request(
             resourcePortfolioPatterns.getTeamOptions,
             workpackageId
@@ -249,24 +248,12 @@ export class ProjectManagementGateway {
     }
 
     @UseGuards(WsGuard)
-    @SubscribeMessage("update:activity-name")
+    @SubscribeMessage("update:activity")
     async updateActivityName(
-        @MessageBody() dto: UpdateActivityNameDto,
+        @MessageBody() dto: UpdateActivityDto,
         @UserId() uid: string
     ) {
-        return await this.client.request(planningPatterns.updateActivityName, {
-            dto,
-            uid,
-        });
-    }
-
-    @UseGuards(WsGuard)
-    @SubscribeMessage("update:activity-color")
-    async updateActivityColor(
-        @MessageBody() dto: UpdateActivityColorDto,
-        @UserId() uid: string
-    ) {
-        return await this.client.request(planningPatterns.updateActivityColor, {
+        return await this.client.request(planningPatterns.updateActivity, {
             dto,
             uid,
         });

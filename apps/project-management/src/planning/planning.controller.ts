@@ -1,4 +1,4 @@
-import { Controller } from "@nestjs/common";
+import { Controller, UsePipes } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import {
@@ -6,8 +6,7 @@ import {
     CreateAllocationDto,
     CreateAssignmentDto,
     DeleteAssignmentDto,
-    UpdateActivityColorDto,
-    UpdateActivityNameDto,
+    PipedUpdateActivityDto,
     UpdateAllocationDto,
     UpdatePeriodDto,
 } from "@ns/dto";
@@ -18,12 +17,12 @@ import {
     CreateAssignmentCommand,
     DeleteActivityCommand,
     DeleteAssignmentCommand,
-    UpdateActivityColorCommand,
-    UpdateActivityNameCommand,
+    UpdateActivityCommand,
     UpdateAllocationCommand,
     UpdatePeriodCommand,
 } from "./commands";
 import { AllocationQuery, PlanQuery } from "./queries";
+import { UpdateActivityPipe } from "./pipes";
 
 @Controller()
 export class PlanningNatsController {
@@ -102,31 +101,22 @@ export class PlanningNatsController {
         );
     }
 
-    @MessagePattern(patterns.updateActivityName)
-    async updateActivityName(
-        @Payload("dto") dto: UpdateActivityNameDto,
-        @Payload("uid") uid: string
-    ) {
-        return await this.commandBus.execute(
-            new UpdateActivityNameCommand(dto, uid)
-        );
-    }
-
-    @MessagePattern(patterns.updateActivityColor)
-    async updateActivityColor(
-        @Payload("dto") dto: UpdateActivityColorDto,
-        @Payload("uid") uid: string
-    ) {
-        return await this.commandBus.execute(
-            new UpdateActivityColorCommand(dto, uid)
-        );
-    }
-
     @MessagePattern(patterns.updatePeriod)
     async updatePeriod(
         @Payload("dto") dto: UpdatePeriodDto,
         @Payload("uid") uid: string
     ) {
         return await this.commandBus.execute(new UpdatePeriodCommand(dto, uid));
+    }
+
+    @UsePipes(UpdateActivityPipe)
+    @MessagePattern(patterns.updateActivity)
+    async updateActivity(
+        @Payload("dto") dto: PipedUpdateActivityDto,
+        @Payload("uid") uid: string
+    ) {
+        return await this.commandBus.execute(
+            new UpdateActivityCommand(dto, uid)
+        );
     }
 }

@@ -36,8 +36,8 @@ export class AddTeamMemberHandler
     }
 
     query = `
-        MATCH (p:Plan)
-            WHERE p.id = $planId
+        MATCH (w:Workpacakge)-[:HAS]->(p:Plan)
+            WHERE w.id = $workpackageId
         MATCH (a:Agent)
             WHERE a.id = $agentId
         MERGE result = (a)-[:IS_ASSIGNED_TO {timestamp: timestamp(), uid: $uid}]->(p)

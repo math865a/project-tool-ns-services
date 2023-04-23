@@ -35,8 +35,8 @@ export class RemoveTeamMemberHandler
     }
 
     query = `
-        MATCH (pl:Plan)<-[rel:IS_ASSIGNED_TO]-(agent:Agent)
-            WHERE pl.id = $planId
+        MATCH (w:Workpackage)-[:HAS]->(pl:Plan)<-[rel:IS_ASSIGNED_TO]-(agent:Agent)
+            WHERE w.id = $workpackageId
             AND agent.id = $agentId
             
         CALL {

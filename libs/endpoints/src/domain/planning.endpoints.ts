@@ -16,6 +16,5 @@ export const planningPatterns = {
     createAssignment: getPattern('create:assignment'),
     deleteAssignment: getPattern('delete:assignment'),
     updatePeriod: getPattern('update:period'),
-    updateActivityColor: getPattern('update:activity-color'),
-    updateActivityName: getPattern('update:activity-name'),
+    updateActivity: getPattern("update:activity")
 };

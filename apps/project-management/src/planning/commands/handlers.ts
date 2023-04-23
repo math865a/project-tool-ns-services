@@ -3,7 +3,7 @@ import { CreateAllocationHandler } from "./create-allocation";
 import { CreateAssignmentHandler } from "./create-assignment";
 import { DeleteActivityHandler } from "./delete-activity";
 import { DeleteAssignmentHandler } from "./delete-assignment";
-import { UpdateActivityNameHandler } from "./update-activity-name";
+import { UpdateActivityHandler } from "./update-activity";
 import { UpdateAllocationHandler } from "./update-allocation";
 import { UpdatePeriodHandler } from "./update-period";
 
@@ -15,6 +15,5 @@ export const commandHandlers = [
     DeleteAssignmentHandler,
     UpdateAllocationHandler,
     UpdatePeriodHandler,
-    UpdateActivityNameHandler,
-    UpdateActivityNameHandler
+    UpdateActivityHandler
 ];

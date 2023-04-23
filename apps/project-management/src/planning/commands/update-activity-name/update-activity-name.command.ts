@@ -1,7 +1,0 @@
-import {
-    UpdateActivityNameDto
-} from '@ns/dto';
-
-export class UpdateActivityNameCommand {
-    constructor(public readonly dto: UpdateActivityNameDto, public readonly uid: string) {}
-}

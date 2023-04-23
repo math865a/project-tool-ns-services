@@ -10,13 +10,15 @@ export class PlanQueryHandler
 
     async execute({ workpackageId }: PlanQuery): Promise<any> {
         return await Promise.all([
+            this.getPeriod(workpackageId),
             this.getActivities(workpackageId),
             this.getTeam(workpackageId),
             this.getAssignments(workpackageId),
         ]).then((res) => ({
-            activities: res[0],
-            team: res[1],
-            assignments: res[2],
+            ...res[0],
+            activities: res[1],
+            team: res[2],
+            assignments: res[3],
         }));
     }
 
@@ -41,6 +43,24 @@ export class PlanQueryHandler
         return queryResult.records.map((d) => d.get("assignment"));
     }
 
+    async getPeriod(workpackageId: string){
+        const queryResult = await this.client.read(this.periodQuery, {
+            workpackageId: workpackageId,
+        });
+        return queryResult.records[0]?.get("period") as {start: string, end: string};
+    }
+
+    periodQuery = `
+        MATCH (w:Workpackage)-[:HAS]->(plan:Plan)
+            WHERE w.id = $workpackageId
+        
+        RETURN {
+            start: apoc.temporal.format(plan.startDate, "YYYY-MM-dd"),
+            end: apoc.temporal.format(plan.endDate, "YYYY-MM-dd")
+        } AS period
+    
+    `
+
     rowQuery = `
         MATCH (w:Workpackage)-[:HAS]->(plan:Plan)
             WHERE w.id = $workpackageId
@@ -59,8 +79,8 @@ export class PlanQueryHandler
                 id: plan.id,
                 children: planChildren,
                 kind: "Plan",
-                startDate: plan.startDate,
-                endDate: plan.endDate,
+                startDate: apoc.temporal.format(plan.startDate, "YYYY-MM-dd"),
+                endDate: apoc.temporal.format(plan.endDate, "YYYY-MM-dd"),
                 children: planChildren
             } AS planActivity
             RETURN planActivity
@@ -79,8 +99,8 @@ export class PlanQueryHandler
                 color: delivery.color,
                 kind: "Delivery",
                 children: deliveryChildren,
-                startDate: delivery.startDate,
-                endDate: delivery.endDate
+                startDate: apoc.temporal.format(delivery.startDate, "YYYY-MM-dd"),
+                endDate: apoc.temporal.format(delivery.endDate, "YYYY-MM-dd")
             }) AS deliveryActivities, 
             apoc.coll.flatten(collect(deliveryTasks)) AS tasks
             RETURN deliveryActivities, tasks
@@ -97,8 +117,8 @@ export class PlanQueryHandler
                 description: task.description,
                 kind: "Task",
                 children: taskChildren,
-                startDate: task.startDate,
-                endDate: task.endDate
+                startDate: apoc.temporal.format(task.startDate, "YYYY-MM-dd"),
+                endDate: apoc.temporal.format(task.endDate, "YYYY-MM-dd")
             }) AS taskActivities
             RETURN taskActivities
         }
@@ -151,8 +171,8 @@ export class PlanQueryHandler
             WITH collect({
                 id: allocation.id,
                 interval: {
-                    start: allocation.startDate,
-                    end: allocation.endDate
+                    start: apoc.temporal.format(allocation.startDate, "YYYY-MM-dd"),
+                    end: apoc.temporal.format(allocation.endDate, "YYYY-MM-dd")
                 },
                 timesheet: {
                     defaultMinutes: allocation.defaultMinutes,
