@@ -14,6 +14,7 @@ export class WorkpackageViewQueryHandler
     }
 
     query = `
+        MATCH (defaultPM:DefaultProjectManager)
         MATCH (w:Workpackage)--(plan:Plan)
 
 
@@ -67,13 +68,21 @@ export class WorkpackageViewQueryHandler
         }
 
         CALL {
-            WITH plan
-            MATCH (plan)<-[:MANAGES]-(pm:ProjectManager)
-            RETURN {
-                id: pm.id,
-                name: pm.name,
-                color: pm.color
-            } AS projectManager
+            WITH plan, defaultPM
+            OPTIONAL MATCH (plan)<-[:MANAGES]-(pm:ProjectManager)
+            RETURN CASE
+                WHEN pm.id IS NOT NULL
+                    THEN  {
+                        id: pm.id,
+                        name: pm.name,
+                        color: pm.color
+                    } 
+                ELSE {
+                    id: defaultPM.id,
+                    name: defaultPM.name,
+                    color: defaultPM.color
+                }
+            END AS projectManager
         }
 
         CALL {
