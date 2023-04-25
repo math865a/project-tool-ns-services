@@ -42,7 +42,7 @@ export class WorkpackagesController {
             ),
             this.client.request(workpackagePatterns.getWorkpackageStages),
         ]).then((res) => ({
-            record: res[3],
+            record: res[0],
             options: {
                 contractOptions: res[1],
                 financialSourceOptions: res[2],

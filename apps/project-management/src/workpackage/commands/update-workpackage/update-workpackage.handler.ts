@@ -57,7 +57,6 @@ export class UpdateWorkpackageHandler
             WHERE w.id = $workpackageId
         SET w += {
             name: $name,
-            description: $description,
             serialNo: $serialNo,
             systematicName: $systematicName
         }

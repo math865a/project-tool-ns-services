@@ -52,7 +52,7 @@ export class CreateWorkpackageHandler
         });
         const result = queryResult.records[0]?.get("result");
         if (result) {
-            this.publisher.publish(new WorkpackageCreatedEvent());
+            this.publisher.publish(new WorkpackageCreatedEvent(command.dto, command.uid));
             return new FormSuccessResponse({
                 id: result.workpackage.id,
             });
