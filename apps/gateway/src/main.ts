@@ -15,6 +15,7 @@ async function bootstrap() {
     app.enableCors({ origin: "*:*" });
     app.use(compression());
     await app.startAllMicroservices();
-    await app.listen(process.env.PORT || 5000);
+    await app.listen(process.env.PORT || 5001);
+    console.log("listening on port " + process.env.PORT || 5001);
 }
 bootstrap();

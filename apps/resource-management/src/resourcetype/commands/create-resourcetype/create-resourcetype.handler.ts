@@ -19,6 +19,7 @@ export class CreateResourceTypeHandler
 
     async execute(command: CreateResourceTypeCommand): Promise<FormResponse> {
         const validation = await this.checkDuplicates(command.dto);
+
         if (typeof validation !== 'boolean') {
             return validation;
         }

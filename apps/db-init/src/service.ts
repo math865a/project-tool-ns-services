@@ -258,7 +258,7 @@ export class DBInitService  {
                     isOnline: false,
                     isDeactivated: false,
                     color: "#0B5351",
-                    id: "user1,
+                    id: "user1",
                     uid: "user1"
                 })
                 CREATE (c:Credentials {

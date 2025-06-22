@@ -9,6 +9,7 @@ export class ResourceOptionsQueryHandler
     constructor(private client: Neo4jClient) {}
 
     async execute() {
+        console.log("resource-options")
         const { records } = await this.client.read(`
             MATCH (r:Resource)
             WITH {

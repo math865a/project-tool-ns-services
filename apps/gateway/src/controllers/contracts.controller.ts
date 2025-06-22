@@ -11,6 +11,7 @@ export class ContractsController {
     @Get("options")
     async getOptions() {
         console.log("options")
+
         return await this.client.request(contractPatterns.getContractOptions);
     }
 

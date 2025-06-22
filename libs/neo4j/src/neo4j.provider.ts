@@ -6,7 +6,7 @@ export const Neo4jProvider: Provider = {
     provide: NEO4J_TOKEN,
     useFactory: () => {
         return neo4j.driver(
-            process.env.NEO4J_CONN,
+            process.env.NEO4J_CONN || "neo4j://localhost:7999",
             neo4j.auth.basic(
                 "neo4j",
                 "password"

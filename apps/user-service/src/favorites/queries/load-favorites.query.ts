@@ -18,7 +18,7 @@ export class LoadFavoritesQueryHandler
             recordIds: query.recordIds ?? null
         });
         const response: any[] =
-            queryResult.records[0].get('favorites');
+            queryResult.records[0].get('favorites') ?? [];
         return response;
     }
 
