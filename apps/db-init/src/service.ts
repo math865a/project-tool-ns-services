@@ -252,8 +252,8 @@ export class DBInitService  {
             CALL {
                 WITH adminGroup
                 CREATE (u:User {
-                    name: "Mathias Øhrgaard",
-                    email: "mathioee@gmail.com",
+                    name: "Admin Admin",
+                    email: "smth@gmail.com",
                     lastSeen: null,
                     isOnline: false,
                     isDeactivated: false,
@@ -263,8 +263,8 @@ export class DBInitService  {
                 })
                 CREATE (c:Credentials {
                     changedAt: timestamp(),
-                    password: "Ninus2009",
-                    username: "mathioee@gmail.com"
+                    password: "pass",
+                    username: "smth@gmail.com"
                 })
                 MERGE (u)-[:HAS_CREDENTIALS]->(c)
                 MERGE (u)-[:IN_ACCESS_GROUP {timestamp: timestamp()}]->(adminGroup)
